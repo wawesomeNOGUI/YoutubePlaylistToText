@@ -47,8 +47,8 @@ func main(){
   //fmt.Println(body)
 
   var vidTitles []string
-  match :=  "aria-label=\""
-  //match := "title=\""
+  match2 :=  "aria-label=\""
+  match := "title=\""
   //var match string = "\"title\":{\"runs\":[{\"text\":\""
   //var match2 string = "\"accessibility\":{\"accessibilityData\":{\"label\":\""
   //var match2 string = "aria-label=\""
@@ -75,7 +75,9 @@ func main(){
     }
   }
 
-/*
+  //First Print Playlist Length
+  fmt.Println(len(vidTitles), " Items In Playlist")
+
   body = string(b) //fresh copy of body
 
   for {
@@ -96,11 +98,8 @@ func main(){
       break
     }
   }
-*/
 
-  //First Print Playlist Length
-  fmt.Println(len(vidTitles), " Items In Playlist")
-
+  //Print all the titles
   for i:= 0; i<len(vidTitles); i++ {
     fmt.Println(vidTitles[i])
   }
