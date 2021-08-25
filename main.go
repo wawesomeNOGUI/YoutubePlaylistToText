@@ -47,9 +47,11 @@ func main(){
   //fmt.Println(body)
 
   var vidTitles []string
-  var match string = "\"title\":{\"runs\":[{\"text\":\""
-  var match2 string = "\"accessibility\":{\"accessibilityData\":{\"label\":\""
-  //var match string = "aria-label"
+  match :=  "aria-label=\""
+  //match := "title=\""
+  //var match string = "\"title\":{\"runs\":[{\"text\":\""
+  //var match2 string = "\"accessibility\":{\"accessibilityData\":{\"label\":\""
+  //var match2 string = "aria-label=\""
 
   body := string(b)  //copy of body to work on
 
@@ -71,22 +73,9 @@ func main(){
     }else{
       break
     }
-
-
-
-/*
-    titleStart := strings.Index(body, "title")
-    if titleStart == -1 {break}
-
-    titleStart = titleStart + len("title") + 2  //length of word title and ="
-
-    body = body[titleStart:]
-*/
-
-  //  fmt.Println(body, "\n")
-
   }
 
+/*
   body = string(b) //fresh copy of body
 
   for {
@@ -107,8 +96,10 @@ func main(){
       break
     }
   }
+*/
 
-
+  //First Print Playlist Length
+  fmt.Println(len(vidTitles), " Items In Playlist")
 
   for i:= 0; i<len(vidTitles); i++ {
     fmt.Println(vidTitles[i])
