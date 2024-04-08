@@ -9,4 +9,4 @@ To get all the names in a long playlist you have to:
   (The farthest div you should have to go will be labled something like: <div id="content" class="style-scope ytd-app">)
 - Copy everything inside that div to get all the video titles
 - Paste that text into a file and use that file as input when running the program e.g:
-main.exe -file pathToFile.txt
+main.exe -file pathToFile.html > playListAsText.txt
