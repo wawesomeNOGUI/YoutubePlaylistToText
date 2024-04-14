@@ -11,8 +11,13 @@ import (
 )
 
 var songSlice []string
+var doneTraversing = false
 
 func traverseHTML(n *html.Node) {
+	if doneTraversing {
+		return
+	}
+
 	if n.Type == html.TextNode {
 		// remove whitespace
 		tmp := strings.ReplaceAll(n.Data, " ", "")
@@ -20,6 +25,10 @@ func traverseHTML(n *html.Node) {
 		tmp = strings.ReplaceAll(tmp, "\t", "")
 
 		if tmp != "" {
+			if tmp == "Suggestions" {	// ignore youtube playlist suggestions at bottom
+				doneTraversing = true
+				return
+			}
 			songSlice = append(songSlice, n.Data)
 		}
 	}
@@ -63,20 +72,50 @@ func main() {
 	so we'll use video length as delimiter
 	*/
 
-	// print song title | artist name
+	var tmpSlice []string
+	var totalPlaylistLengthMin int
+	var totalPlaylistLengthSec int
+
+	// get song title | artist name
 	for i := 0; i < len(songSlice); i++ {
-		fmt.Println(songSlice[i], "|", songSlice[i + 1])
+		tmpSlice = append(tmpSlice, songSlice[i] + " | " + songSlice[i + 1])
 
 		// find where next song starts using time as delimiter
 		for j := i; j < len(songSlice); j++ {
-			tmp := strings.ReplaceAll(songSlice[j], ":", "")
+			if !strings.Contains(songSlice[j], ":") {
+				continue
+			}
 
-			_, err := strconv.Atoi(tmp)
-			if err == nil {
+			// try to get min:sec
+			time := strings.Split(songSlice[j], ":")
+
+			m, err1 := strconv.Atoi(time[0])
+			s, err2 := strconv.Atoi(time[1])
+
+			if err1 == nil && err2 == nil {
+				totalPlaylistLengthMin += m
+				totalPlaylistLengthSec += s
+				
 				i = j
 				break
-			}
+			}		
 		}
+	}
+
+	// convert times
+	totalPlaylistLengthMin += totalPlaylistLengthSec / 60
+	totalPlaylistLengthSec = totalPlaylistLengthSec % 60
+
+	totalPlaylistLengthHour := totalPlaylistLengthMin / 60
+	totalPlaylistLengthMin = totalPlaylistLengthMin % 60
+
+	// print out playlist length and then all the songs
+	fmt.Printf("Playlist Length: %d songs!\n\n", len(tmpSlice))
+
+	fmt.Printf("Playlist Length: %d Hours : %d Minutes : %d Seconds!\n\n", totalPlaylistLengthHour, totalPlaylistLengthMin, totalPlaylistLengthSec)
+	
+	for _, v := range tmpSlice {
+		fmt.Println(v)
 	}
 
 }
